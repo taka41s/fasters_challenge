@@ -1,0 +1,5 @@
+Quanto tempo você usou para completar a solução apresentada? O que você faria se tivesse mais tempo?
+Cerca de 5 horas. Com certeza refatoraria o controller e faria mais testes
+
+Se usou algum framework, qual foi o motivo de ter usado este? Caso contrário, por que não utilizou nenhum?
+usei o rspec como framework de testes por estar acostumado a escrever testes nele

@@ -1,0 +1,19 @@
+default: &default
+  adapter: <%= ENV['ADAPTER'] %>
+  encoding: unicode
+  database: <%= ENV['POSTGRES_DATABASE'] %>
+  host: database_postgresql
+  pool: 5
+  username: <%= ENV['POSTGRES_USER'] %> 
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+
+development:
+  <<: *default
+
+
+test:
+  adapter: <%= ENV['ADAPTER'] %>
+  database: fasters_rspec
+  host: database_postgresql
+  username: <%= ENV['POSTGRES_USER'] %> 
+  password: <%= ENV['POSTGRES_PASSWORD'] %>

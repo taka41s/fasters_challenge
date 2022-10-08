@@ -1,0 +1,32 @@
+version: "3"
+services:
+  server:
+    build:
+      context: .
+    entrypoint: entrypoint.sh # Script in charge on running migrations.
+    command: bundle exec rails s -p 3000 -b 0.0.0.0
+    volumes:
+      - .:/fasters_challenge:cached
+
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      WAIT_HOSTS: database_postgresql:5432
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
+    depends_on:
+      - database_postgresql
+    stdin_open: true
+    tty: true
+
+  database_postgresql:
+    image: postgres:14.0
+    restart: always
+    environment:
+      POSTGRESQL_DATABASE: ${POSTGRES_DATABASE}
+      POSTGRESQL_HOST: ${POSTGRES_HOST}
+      POSTGRESQL_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    ports:
+      - "5440:5432"
