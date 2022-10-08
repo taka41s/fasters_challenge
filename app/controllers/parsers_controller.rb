@@ -1,9 +1,10 @@
 class ParsersController < ApplicationController
   def show
     @parser = HistoricalPrice.where(year: params[:year], ticker: params[:ticker])
+
     if @parser.present? == false
       valid_tickers =  ["PETR4","VALE3","MGLU3"]
-      if params[:ticker].in?(valid_tickers)
+      if params[:ticker].in?(valid_tickers) && params[:year].present?
         @parser = Parser.new(archive_path: "#{params[:ticker]}.SA.csv", year: params[:year]).make
         
         @parser.each do |parsed|

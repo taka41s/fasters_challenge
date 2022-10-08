@@ -9,3 +9,8 @@
 ```
  docker-compose up -d
   ```
+
+* endpoint
+```
+  get /list with params year and ticker
+```
