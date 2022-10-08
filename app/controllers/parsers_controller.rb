@@ -1,6 +1,7 @@
 class ParsersController < ApplicationController
   def show
-    @parser = HistoricalPrice.where(year: params[:year], ticker: params[:ticker])
+    @parser = HistoricalPrice.select(:month, :year, :open_price, :highest_price, :lowest_price, :volume, :close_price).where(year: params[:year], ticker: params[:ticker])
+    byebug
 
     if @parser.present? == false
       valid_tickers =  ["PETR4","VALE3","MGLU3"]

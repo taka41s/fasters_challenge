@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_08_001528) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_08_012841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,7 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_001528) do
     t.float "highest_price"
     t.float "lowest_price"
     t.integer "volume"
-    t.integer "close_price"
+    t.float "close_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "ticker"
