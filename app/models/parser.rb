@@ -1,5 +1,5 @@
 class Parser
-  attr_accessor :file, :file_path, :items, :year, :ticker
+  attr_accessor :file_path, :items, :year, :ticker
   def initialize(options = {})
     @archive_path = options[:archive_path]
     @items = []
