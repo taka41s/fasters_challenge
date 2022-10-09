@@ -63,11 +63,14 @@ class Parser
 
     months_initials.each do |month|
       next unless month_exist?(month)
-      data[month] << {open: organize_month_tuples[month]&.first[:open]}
-      data[month] << {close: organize_month_tuples[month].last[:close]}
-      data[month] << {volume: volume}
-      data[month] << {lowest_price: organize_month_tuples[month].map{|row| row[:low]}.min}
-      data[month] << {highest_price: organize_month_tuples[month].map{|row| row[:high]}.max}
+      data[month] << {
+        month: month,
+        year: year.to_i,
+        open_price: organize_month_tuples[month]&.first[:open].to_f, 
+        close_price: organize_month_tuples[month].last[:close].to_f, volume: volume, 
+        lowest_price: organize_month_tuples[month].map{|row| row[:low].to_f}.min,
+        highest_price: organize_month_tuples[month].map{|row| row[:high].to_f}.max
+      }
     end
 
     data
