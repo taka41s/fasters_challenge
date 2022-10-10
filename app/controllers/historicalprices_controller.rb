@@ -1,6 +1,6 @@
-class ParsersController < ApplicationController
+class HistoricalpricesController < ApplicationController
   def show
-    @parser = HistoricalPrice.select(:month, :year, :ticker, :open_price, :highest_price, :lowest_price, :volume, :close_price, :id).where(year: params[:year], ticker: params[:ticker])
+    @parser = HistoricalPrice.select(:month, :year, :ticker, :open_price, :highest_price, :lowest_price, :volume, :close_price, :id).where(historical_price_params)
 
     if @parser.present? == false
       valid_tickers =  ["PETR4","VALE3","MGLU3"]
@@ -18,4 +18,9 @@ class ParsersController < ApplicationController
       render json: {result: @parser}, status: 200
     end
   end
+
+  private
+    def historical_price_params
+      params.require(:historicalprice).permit(:year, :ticker)
+    end
 end
