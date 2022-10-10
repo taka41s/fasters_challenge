@@ -1,26 +1,37 @@
 class HistoricalpricesController < ApplicationController
+  VALID_TICKETS = ["PETR4","VALE3","MGLU3"].freeze
+  before_action :set_parser, only: [:show]
+
   def show
-    @parser = HistoricalPrice.select(:month, :year, :ticker, :open_price, :highest_price, :lowest_price, :volume, :close_price, :id).where(historical_price_params)
+    return render json: historicalprices_serializer, status: 200 if @parser.present?
+    return render json: {result: "ticker not found"}, status: 404 unless valid_params?
 
-    if @parser.present? == false
-      valid_tickers =  ["PETR4","VALE3","MGLU3"]
+    @parser = Parser.new(archive_path: "#{params[:ticker]}.SA.csv", ticker: parser_params[:ticker], year: parser_params[:year]).call
 
-      if params[:ticker].in?(valid_tickers) && params[:year].present?
-        @parser = Parser.new(archive_path: "#{params[:ticker]}.SA.csv", ticker: params[:ticker], year: params[:year]).make
-        data = @parser.map{|x| x[1][0]}.compact
-        historical_price = HistoricalPrice.insert_all!(data)
+    data = @parser.map{|historical| historical[1][0]}
+    HistoricalPrice.insert_all(data)
 
-        render json: {result: data.compact}, status: 200
-      else
-        render json: {result: "ticker not found"}, status: 404
-      end
-    else
-      render json: {result: @parser}, status: 200
-    end
+    render json: parser_serializer, status: 200
   end
 
   private
-    def historical_price_params
+    def parser_params
       params.require(:historicalprice).permit(:year, :ticker)
+    end
+
+    def set_parser
+      @parser = HistoricalPrice.where(parser_params)
+    end
+
+    def valid_params?
+      parser_params[:ticker].in?(VALID_TICKETS) && parser_params[:year].present?
+    end
+
+    def historicalprices_serializer
+      @parser.as_json(except: [:id, :created_at, :updated_at])
+    end
+
+    def parser_serializer
+      @parser.map{|historical| historical[1][0]}
     end
 end
