@@ -4,6 +4,7 @@ class Parser
     @archive_path = options[:archive_path]
     @items = []
     @year = options[:year]
+    @ticker = options[:ticker]
   end
 
   def make
@@ -63,9 +64,11 @@ class Parser
 
     months_initials.each do |month|
       next unless month_exist?(month)
+
       data[month] << {
         month: month,
         year: year.to_i,
+        ticker: ticker,
         open_price: organize_month_tuples[month]&.first[:open].to_f, 
         close_price: organize_month_tuples[month].last[:close].to_f, volume: volume, 
         lowest_price: organize_month_tuples[month].map{|row| row[:low].to_f}.min,
