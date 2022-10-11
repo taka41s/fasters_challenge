@@ -8,7 +8,7 @@ class HistoricalpricesController < ApplicationController
 
     @parser = Parser.new(archive_path: "#{params[:ticker]}.SA.csv", ticker: parser_params[:ticker], year: parser_params[:year]).call
 
-    data = @parser.map{|historical| historical[1][0]}
+    data = @parser.map{|historical| historical[1][0]}.compact
     HistoricalPrice.insert_all(data)
 
     render json: parser_serializer, status: 200
